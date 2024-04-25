@@ -51,13 +51,13 @@ stdenv.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Forensic imager for media acquisition";
     mainProgram = "guymager";
     homepage = "https://guymager.sourceforge.io";
-    maintainers = with maintainers; [ d3vil0p3r ];
-    platforms = platforms.unix;
-    sourceProvenance = with sourceTypes; [ binaryBytecode ];
-    license = licenses.gpl2Only;
+    maintainers = with lib.maintainers; [ d3vil0p3r ];
+    platforms = lib.platforms.unix;
+    sourceProvenance = with lib.sourceTypes; [ binaryBytecode ];
+    license = lib.licenses.gpl2Only;
   };
 })
