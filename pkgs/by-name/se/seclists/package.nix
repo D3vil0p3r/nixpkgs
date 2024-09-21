@@ -2,19 +2,13 @@
   lib,
   fetchFromGitHub,
   stdenvNoCC,
-  archiveExtract ? [ ],
+  archivesToExtract ? [ ],
   unzip,
 }:
 
 let
   pname = "seclists";
-  archiveExtractList = [
-    "true"
-    "false"
-  ];
 in
-lib.checkListOfEnum "${pname}: archiveExtract" archiveExtractList archiveExtract
-
   stdenvNoCC.mkDerivation
   {
     inherit pname;
@@ -33,29 +27,19 @@ lib.checkListOfEnum "${pname}: archiveExtract" archiveExtractList archiveExtract
       runHook preInstall
 
       mkdir -p $out/share/wordlists/seclists
-      ${lib.optionalString (archiveExtract == [ "true" ]) ''
-        DIRS=(
-            "./Passwords/Leaked-Databases"
-            "./Payloads"
-            "./Miscellaneous"
-        )
-        for DIR in "''${DIRS[@]}"; do
-          for file in "$DIR"/*.{tar.gz,zip}; do
-            echo "File $file"
-            if [[ -f "$file" ]]; then
-              case "$file" in
-                *.tar.gz)
-                  tar -zxvf "$file" -C "$DIR"
-                  ;;
-                *.zip)
-                  unzip "$file" -d "$DIR"
-                  ;;
-              esac
-              rm "$file"
-            fi
-          done
-        done
-      ''}
+      for file in ${builtins.toString archivesToExtract}; do
+        DIR="$(dirname $file)"
+        case "$file" in
+          *.tar.gz)
+            tar -zxvf "$file" -C "$DIR"
+            ;;
+          *.zip)
+            unzip "$file" -d "$DIR"
+            ;;
+        esac
+        rm "$file"
+      done
+
       find . -maxdepth 1 -type d -regextype posix-extended -regex '^./[A-Z].*' -exec cp -R {} $out/share/wordlists/seclists \;
       find $out/share/wordlists/seclists -name "*.md" -delete
 
