@@ -16,14 +16,14 @@
 
 rustPlatform.buildRustPackage {
   pname = "htb-toolkit";
-  version = "0-unstable-2025-12-19";
+  version = "1.0.0-unstable-2026-07-14";
 
   src = fetchFromGitHub {
-    owner = "D3vil0p3r";
+    owner = "Athena-OS";
     repo = "htb-toolkit";
     # https://github.com/D3vil0p3r/htb-toolkit/issues/3
-    rev = "4f1c6bded11d8c907c951fcbe63f1fc44568a9f9";
-    hash = "sha256-pkZ5KVSgtrWfXhJ3knmyOIArIjyAjMmm5WcrrB2pCKY=";
+    rev = "9edd01f98df4f666e38aaf9aa1a9c070b8d35e9a";
+    hash = "sha256-i+/gAWtGCIKYJlrS9bolQOy9LDJgMapH6xHmFci5pO0=";
   };
 
   cargoHash = "sha256-ReEe8pyW66GXIPwAy6IKsFEAUjxHmzw5mj21i/h4quQ=";
@@ -60,8 +60,8 @@ rustPlatform.buildRustPackage {
   meta = {
     description = "Play Hack The Box directly on your system";
     mainProgram = "htb-toolkit";
-    homepage = "https://github.com/D3vil0p3r/htb-toolkit";
-    maintainers = [ ];
+    homepage = "https://github.com/Athena-OS/htb-toolkit";
+    maintainers = with lib.maintainers; [ d3vil0p3r ];
     platforms = lib.platforms.unix;
     license = lib.licenses.gpl3Plus;
   };
